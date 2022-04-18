@@ -1,0 +1,9 @@
+{
+  "name": "js-naver-order",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "polymer-cli": "^1.9.11"
+  }
+}
