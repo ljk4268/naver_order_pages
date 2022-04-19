@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import View from './view.js';
 
-
 export default class App extends View {
   constructor() {
     super();
