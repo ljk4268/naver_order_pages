@@ -1,6 +1,6 @@
-import {
-  html
-} from 'lit';
+import { html } from 'lit';
+
+import {fetchGetRecentOrders} from '../api/index.js';
 import View from '../view.js';
 
 const TABS = [{
@@ -29,13 +29,16 @@ export default class MenuPage extends View {
     super()
 
     this.tabIndex = 0
+    this.recentMenuItems = [];
+
+    fetchGetRecentOrders().then((response)=>(this.recentMenuItems = response),);
     
   }
 
   static get properties(){
     return {
       tabIndex: {type: Number},
-      
+      recentMenuItems: { type: Array },
     }
   }
 
@@ -43,7 +46,10 @@ export default class MenuPage extends View {
     this.tabIndex = index;
   }
 
-  
+  redirectDetailPage(id) {
+    history.pushState(null, null, `/detail/${id}`),
+    this.dispatchEvent(new PopStateEvent('popstate'));
+  }
 
   createRenderRoot() {
     return this;
@@ -95,23 +101,31 @@ export default class MenuPage extends View {
 
           <!-- 최근 주문 내역 -->
           <div class="recent-order-area">
-            <div class="recent-title">
-              <img
-                src="/assets/images/ico-clock.svg"
-                alt=""
-                class="ico-clock"
-              />최근<br />주문
+              <div class="recent-title">
+                  <img src="../assets/images/ico-clock.svg" alt="" class="ico-clock">최근<br>주문
+                        </div>
+                        <div class="recent-menu-area scroll-x">
+                            <ul class="recent-menu-list">
+                                ${this.recentMenuItems.map(({id,price,name,imageUrl,isPopular}) => html `<li class="recent-menu-item is-ordered" @click=${() => this.redirectDetailPage(id)}>
+                                <a>
+                                    <div class="menu-img-area">
+                                    ${isPopular ? '<span class="badge-popular">인기</span>' : ''}
+                                        <img class="menu-img" src="${imageUrl}" alt="메뉴사진">
+                                    </div>
+                                    <p class="menu-name">${name}</p>
+                                    <p class="menu-price">${price}</p>
+                                </a>
+                                <a href="#" class="badge-cart">
+                                    <img src="../assets/images/ico-cart.svg" alt="주문하기" class="ico-cart">
+                                </a>
+                            </li>`
+                            )}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="recent-menu-area scroll-x">
-              <recent-menu-list
-                .items=
-                .onItemClick=
-              ></recent-menu-list>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
     <!-- // 주문정보영역 -->
 
 
@@ -131,3 +145,4 @@ export default class MenuPage extends View {
   </div>`;
   }
 }
+
