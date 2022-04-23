@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
-import {fetchGetRecentOrders} from '../api/index.js';
+import {fetchGetRecentOrders, fetchGetMenuGroups} from '../api/index.js';
 import View from '../view.js';
 
 const TABS = [{
@@ -30,8 +30,11 @@ export default class MenuPage extends View {
 
     this.tabIndex = 0
     this.recentMenuItems = [];
+    this.menuGrops = [];
+    this.selectedCategory = '추천';
 
     fetchGetRecentOrders().then((response)=>(this.recentMenuItems = response),);
+    fetchGetMenuGroups().then((response)=>(this.menuGrops = response),);
     
   }
 
@@ -39,11 +42,18 @@ export default class MenuPage extends View {
     return {
       tabIndex: {type: Number},
       recentMenuItems: { type: Array },
+      menuGrops: { type: Array },
+      selectedCategory: { type: String },
+
     }
   }
 
   onChangeTab(index) {
     this.tabIndex = index;
+  }
+
+  onChangeCategory(category){
+    this.selectedCategory = category
   }
 
   redirectDetailPage(id) {
@@ -56,6 +66,14 @@ export default class MenuPage extends View {
   }
 
   render() {
+    const categories = this.menuGrops.map(({category,categoryName})=>({
+      category, 
+      categoryName,
+    }));
+
+
+
+
     return html `<div class="container">
     <!-- 고정헤더영역 -->
     <naver-order-header></naver-order-header>
@@ -109,7 +127,7 @@ export default class MenuPage extends View {
                                 ${this.recentMenuItems.map(({id,price,name,imageUrl,isPopular}) => html `<li class="recent-menu-item is-ordered" @click=${() => this.redirectDetailPage(id)}>
                                 <a>
                                     <div class="menu-img-area">
-                                    ${isPopular ? '<span class="badge-popular">인기</span>' : ''}
+                                    ${isPopular ? html`<span class="badge-popular">인기</span>` : ''}
                                         <img class="menu-img" src="${imageUrl}" alt="메뉴사진">
                                     </div>
                                     <p class="menu-name">${name}</p>
@@ -128,6 +146,20 @@ export default class MenuPage extends View {
         </div>
     <!-- // 주문정보영역 -->
 
+    <div class="menu-category-area">
+    <div class="common-inner">
+        <ul class="category-list scroll-x">
+        ${ categories.map(
+          ({category,categoryName}) => 
+            html`<li class="category-item">
+            <a 
+            @click=${() => this.onChangeCategory(category)}
+            class="category-tab ${category === this.selectedCategory ? 'is-active' : ''}">${categoryName}</a>
+            </li>`,
+            )}
+        </ul>
+    </div>
+</div>
 
     <!-- 맨위로 -->
     <div class="go-to-top">
