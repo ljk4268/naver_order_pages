@@ -1,8 +1,9 @@
-import { html } from 'lit';
-import View from './view.js';
+import { html, LitElement } from 'lit';
 
-export default class App extends View {
-  constructor() {
+
+
+export default class App extends LitElement {
+  constructor(){
     super();
   }
 
@@ -14,17 +15,18 @@ export default class App extends View {
     }
   }
 
+
   createRenderRoot() {
     return this;
-  } 
+  }
 
-  render() {
-    return html `<div className="container">
-    <order-header></order-header>
+  render(){
+    return html `<div className='container'>
     </div>`
   }
 
-  changeMessage(event) {
-    this.message = 'Hello World Click!!'
+  changeMessage(event){
+    this.message = 'hello world'
   }
+
 }
