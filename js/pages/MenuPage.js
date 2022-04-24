@@ -1,16 +1,51 @@
 import { html } from 'lit';
 import View from '../view';
 
+const TABS = [
+  {
+    text: html`🛍&nbsp;&nbsp;포장`,
+    imageUrl: './assets/images/ico-check.svg',
+  },
+  {
+    text: html`🍽&nbsp;&nbsp;매장`,
+    imageUrl: './assets/images/ico-check.svg',
+  },
+  {
+    text: html`🛵&nbsp;&nbsp;배달`,
+    imageUrl: './assets/images/ico-check.svg',
+  },
+]
+
+const ORDER_TYPE_MESSAGE = [
+  "가지고 가실 수 있게 포장해 드립니다.",
+  "매장에서 드실 수 있게 준비됩니다.",
+  "계신 곳으로 배달됩니다. "
+]
+
 export default class MenuPage extends View {
   constructor(){
     super();
+
+    this.tabIndex = 0
+    // this.onChangeTab = this.onChangeTab;
+  }
+
+  static get properties(){
+    return {
+      tabIndex: {type: Number},
+      // onChangeTab: {type: Function},
+    }
+  }
+
+  onChangeTab(index){
+    this.tabIndex = index;
   }
 
   render(){
     return html `
     <div class="order-info-area">
     <div class="common-inner">
-        < class="info-main">
+        <class="info-main">
             <div class="info-main-title">
                 <div class="title">
                     <svg viewBox="0 0 18 18" class="ico-n-logo">
@@ -24,18 +59,27 @@ export default class MenuPage extends View {
 
             <!-- 주문분류 -->
             <div class="tab-switch-box" role="tablist">
-                <a 
+            ${TABS.map((tab, index) => (
+                html`<a 
                 href="#" 
-                class="tab-switch is-active" 
+                class="tab-switch ${index === this.tabIndex ? 'is-active' : ''}" 
                 role="tab"
+                @click=${()=> this.onChangeTab(index)}
                 >
-                <img
-                  class="ico-check"
-                  />
-                </a>
-                </div>
+                ${tab.text}
+                <img 
+                src="${tab.imageUrl}" 
+                alt="${tab.text}"  
+                class="ico-check"
+                aria-hidden="${index === this.tabIndex}" 
+                />
+                </a>`
+            ))}
                 
+                  </div>
+
             <div class="info-main-notice">
+              ${ORDER_TYPE_MESSAGE[this.tabIndex]}
             </div>
 
           
