@@ -1,8 +1,7 @@
-import { html, LitElement } from 'lit';
+import { html } from 'lit';
+import View from './view';
 
-
-
-export default class App extends LitElement {
+export default class App extends View {
   constructor(){
     super();
   }
@@ -15,13 +14,9 @@ export default class App extends LitElement {
     }
   }
 
-
-  createRenderRoot() {
-    return this;
-  }
-
   render(){
     return html `<div className='container'>
+    <order-header></order-header>
     </div>`
   }
 
