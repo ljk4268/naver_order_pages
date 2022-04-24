@@ -1,7 +1,9 @@
 import App from './App.js';
-import Header from './Header.js';
+import './pages/index';
+import './components/index';
+
+
 
 
 customElements.define('naver-order-app', App);
-customElements.define('order-header', Header);
 

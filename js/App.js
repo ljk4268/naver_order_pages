@@ -17,6 +17,7 @@ export default class App extends View {
   render(){
     return html `<div className='container'>
     <order-header></order-header>
+    <menu-page></menu-page>
     </div>`
   }
 
