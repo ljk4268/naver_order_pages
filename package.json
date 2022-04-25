@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "polymer serve"
+    "serve": "polymer serve",
+    "db": "json-server --watch './db.json' --port 3000"
   },
   "keywords": [],
   "author": "",
