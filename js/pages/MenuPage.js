@@ -34,9 +34,11 @@ export default class MenuPage extends View {
     this.selectedCategory = '추천';
 
     fetchGetRecentOrders().then((response)=>(this.recentMenuItems = response),);
+    console.log(fetchGetRecentOrders());
     fetchGetMenuGroups().then((response)=>(this.menuGrops = response),);
     
   }
+  
 
   static get properties(){
     return {
