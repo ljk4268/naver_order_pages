@@ -4,6 +4,4 @@ import './components/index';
 
 
 
-
 customElements.define('naver-order-app', App);
-

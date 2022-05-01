@@ -3,19 +3,7 @@ import { html } from 'lit';
 import { fetchGetRecentOrders, fetchGetMenuGroups }  from '../api/index';
 import View from '../view';
 
-const TABS = [{
-        text: html `🛍&nbsp;&nbsp;포장`,
-        imageUrl: './assets/images/ico-check.svg',
-    },
-    {
-        text: html `🍽&nbsp;&nbsp;매장`,
-        imageUrl: './assets/images/ico-check.svg',
-    },
-    {
-        text: html `🛵&nbsp;&nbsp;배달`,
-        imageUrl: './assets/images/ico-check.svg',
-    },
-]
+
 
 const ORDER_TYPE_MESSAGE = [
     "가지고 가실 수 있게 포장해 드립니다.",
@@ -26,6 +14,8 @@ const ORDER_TYPE_MESSAGE = [
 export default class MenuPage extends View {
     constructor() {
         super();
+
+        this.cartItems = [];
 
         this.tabIndex = 0
         // this.onChangeTab = this.onChangeTab;
@@ -45,6 +35,7 @@ export default class MenuPage extends View {
             selectedCategory: {type: String},
             recentMenuItems: { type: Array },
             menuGroups: { type: Array },
+            cartItems: {type: Array},
         }
     }
 
@@ -92,66 +83,24 @@ export default class MenuPage extends View {
                 </div>
             </div>
 
-            <!-- 주문분류 -->
-            <div class="tab-switch-box" role="tablist">
-            ${TABS.map((tab, index) => (
-                html`<a 
-                href="#" 
-                class="tab-switch ${index === this.tabIndex ? 'is-active' : ''}" 
-                role="tab"
-                @click=${()=> this.onChangeTab(index)}
-                >
-                ${tab.text}
-                <img 
-                src="${tab.imageUrl}" 
-                alt="${tab.text}"  
-                class="ico-check"
-                aria-hidden="${index === this.tabIndex}" 
-                />
-                </a>`
-            ))}
-                
-                </div>
+            
 
             <div class="info-main-notice">
             ${ORDER_TYPE_MESSAGE[this.tabIndex]}
             </div>
 
+        <!-- 주문분류 -->
+        <tab-list
+        .tabIndex=${this.tabIndex}
+        .onChangeTab=${this.onChangeTab.bind(this)}
+        >
+        </tab-list>
         
         <!-- 최근 주문 내역 -->
-        <div class="recent-order-area">
-            <div class="recent-title">
-                <img src="../assets/images/ico-clock.svg" alt="" class="ico-clock">최근<br>주문
-            </div>
-            <div class="recent-menu-area scroll-x">
-                <ul class="recent-menu-list">
-                ${this.recentMenuItems.map(({id,name,isPopular,imageUrl,price}) => html`
-                <li 
-                class="recent-menu-item is-ordered"
-                @click = ${() => this.redirectDetailPage(id)}
-                >
-                        <a>
-                            <div class="menu-img-area">
-                    ${isPopular ? html`<span class="badge-popular">인기</span>` : ""}
-                                <img 
-                                class="menu-img"
-                                src="${imageUrl}" 
-                                alt="메뉴사진">
-                            </div>
-                            <p class="menu-name">${name}</p>
-                            <p class="menu-price">${price}</p>
-                        </a>
-                        <a class="badge-cart">
-                            <img 
-                            src="../assets/images/ico-cart.svg" alt="주문하기" 
-                            class="ico-cart"
-                            />
-                        </a>
-                    </li>
-                `)}
-                </ul>
-            </div>
-        </div>
+        <recent-menu-list
+        .recentMenuItems=${this.recentMenuItems}
+        .redirectDetailPage=${this.redirectDetailPage.bind(this)}
+        ></recent-menu-list>
         </div>
     </div>
 </div>
@@ -174,12 +123,45 @@ export default class MenuPage extends View {
 
 <!-- 메뉴리스트영역 -->
 <!-- MenuList에서 랜더링된 내용이 아래로 들어와. -->
-<!-- MenuList에서 랜더링된 내용이 아래로 들어와. -->
-
 ${this.menuGroups.map(
     (menuGroup) =>
     html`<menu-list .menuGroup = ${menuGroup}></menu-list>`,
 )}
-`
+
+<!-- //메뉴리스트영역 -->
+
+<!-- 담은메뉴영역 -->
+${this.cartItems.length > 0 ? 
+html`
+<div class="order-box-area">
+    <div class="common-inner">
+        <div>
+            <p class="menu-name">0</p>
+            <p class="menu-price">0원</p>
+        </div>
+        <a href="./order.html" class="btn-order">
+            <span class="txt">주문하기</span>
+            <span class="icon">
+                <img src="../assets/images/ico-cart-fill.svg" alt="" aria-hidden="true" class="ico-cart">
+                <span class="num">1</span>
+            </span>
+        </a>
+    </div>
+</div>` : '' }
+<!-- //담은메뉴영역 -->
+
+<!-- 맨위로 -->
+<div class="go-to-top">
+    <a href="#" class="link">Top<i class="ico-up"></i></a>
+    </div>
+    <!-- // 맨위로 -->
+</div>
+
+<div class="dimmed-layer hidden"></div>
+<div class="order-type-popup hidden">
+    <p class="title">어디서 드시나요?</p>
+    <order-type-list></order-type-list>
+</div>
+    `
     }
 }
