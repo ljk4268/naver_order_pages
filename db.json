@@ -29,8 +29,7 @@
       "price": 6900
     }
   ],
-
-  "menu-groups": [
+  "menu-Groups": [
     {
       "category": "recommends",
       "categoryName": "추천",
