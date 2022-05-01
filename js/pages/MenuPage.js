@@ -1,5 +1,4 @@
 import { html } from 'lit';
-
 import { fetchGetRecentOrders, fetchGetMenuGroups }  from '../api/index';
 import View from '../view';
 
@@ -90,6 +89,9 @@ export default class MenuPage extends View {
             </div>
 
         <!-- 주문분류 -->
+        <!-- TabList가 실행될 때 거기서 필요한 매개변수에 변수 넣어주는 부분 -->
+        <!-- onChangeTab.bind(this)는 함수 그 자체를 변수로 할당해주는거래 -->
+        
         <tab-list
         .tabIndex=${this.tabIndex}
         .onChangeTab=${this.onChangeTab.bind(this)}
@@ -97,6 +99,7 @@ export default class MenuPage extends View {
         </tab-list>
         
         <!-- 최근 주문 내역 -->
+        <!-- RecentMenuItems 실행될 때 거기서 필요한 매개변수에 변수 넣어주는 부분 -->
         <recent-menu-list
         .recentMenuItems=${this.recentMenuItems}
         .redirectDetailPage=${this.redirectDetailPage.bind(this)}

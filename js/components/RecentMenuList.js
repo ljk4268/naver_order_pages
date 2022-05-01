@@ -3,9 +3,10 @@ import View from '../view';
 
 
 export default class RecentMenuItems extends View {
+  // 메뉴페이지 103번째줄 실행되면 생성자가 실행되고 매개변수 받아올거라는거
   constructor(recentMenuItems = [], redirectDetailPage) {
     super();
-
+    //RecentMenuItems의 멤버변수
     this.recentMenuItems = recentMenuItems;
     this.redirectDetailPage = redirectDetailPage;
   }

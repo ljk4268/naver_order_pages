@@ -16,9 +16,12 @@ const TABS = [{
 ]
 
 export default class TabList extends View {
+  // tablist 따로 분리해줬고 
+  // 메뉴페이지 93번쨰줄 실행될 때 생성자가 실행되는데 그때 받을 매개변수 받아오는 부분이고
+  // 거기서 받아온 변수를 this.~~~(멤버변수)에 넣어주는거야. 
   constructor(tabIndex = 0 , onChangeTab){
     super();
-
+    // 애네는 멤버변수야. 
     this.tabIndex = tabIndex;
     this.onChangeTab = onChangeTab;
   }
