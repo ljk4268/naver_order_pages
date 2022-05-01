@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import View from '../view.js';
+import View from '../view';
 
 export default class Header extends View {
   constructor(){

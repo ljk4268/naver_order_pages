@@ -21,4 +21,8 @@ export default class App extends View {
     </div>`
   }
 
+  changeMessage(event){
+    this.message = 'hello world'
+  }
+
 }
