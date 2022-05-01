@@ -1,3 +1,4 @@
-import MenuPage from './MenuPage';
+import MenuPage from './MenuPage.js';
 
 customElements.define('menu-page', MenuPage);
+

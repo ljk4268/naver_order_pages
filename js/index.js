@@ -1,7 +1,7 @@
 import App from './App.js';
-import './pages/index';
-import './components/index';
+import './pages/index.js'
+import './components/index.js'
 
 
+customElements.define('naver-order-page', App);
 
-customElements.define('naver-order-app', App);
