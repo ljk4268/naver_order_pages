@@ -53,10 +53,12 @@ export default class MenuPage extends View {
             behavior: 'smooth',
         });
     }
-
+    // 가장 마지막에 들어간 페이지가 위로 쌓여 
+    // pushState로 쌓고 PopStateEvent으로 페이지 뺴냄 
+    // 빼낸 페이지로 이동되는거임. 
     redirectDetailPage(id){
         history.pushState(null,null, `/detail/${id}`)
-        this.dispatchEvent(new PopStateEvent('popstate'))
+        dispatchEvent(new PopStateEvent('popstate'))
     }
 
     render() {
@@ -68,6 +70,8 @@ export default class MenuPage extends View {
 
 
         return html `
+    <div className='container'>
+    <order-header></order-header>
     <div class="order-info-area">
     <div class="common-inner">
         <class="info-main">
@@ -81,8 +85,6 @@ export default class MenuPage extends View {
                     주문
                 </div>
             </div>
-
-            
 
             <div class="info-main-notice">
             ${ORDER_TYPE_MESSAGE[this.tabIndex]}
@@ -126,9 +128,20 @@ export default class MenuPage extends View {
 
 <!-- 메뉴리스트영역 -->
 <!-- MenuList에서 랜더링된 내용이 아래로 들어와. -->
+<!-- MenuPage에서 MenuList를 호출할 수 있는 이유 
+MenuPage에 html 렌더하는 부분에 <menu-list>를 써줬고 
+MenuList는 <menu-list>랑 맵핑한다고 component index.js에 명시해줬고 
+최상위 index.js에서 MenuPage(import './pages/index')을 호출
+MenuList(import './components/index')가 호출되고 만나면서 둘이 연결됨.
+-->
+
+
 ${this.menuGroups.map(
     (menuGroup) =>
-    html`<menu-list .menuGroup = ${menuGroup}></menu-list>`,
+    html`<menu-list 
+    .menuGroup = ${menuGroup}
+    .redirectDetailPage=${this.redirectDetailPage.bind(this)}>
+    </menu-list>`,
 )}
 
 <!-- //메뉴리스트영역 -->
@@ -165,6 +178,6 @@ html`
     <p class="title">어디서 드시나요?</p>
     <order-type-list></order-type-list>
 </div>
-    `
+    </div>`
     }
 }

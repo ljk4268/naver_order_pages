@@ -7,13 +7,14 @@ export default class MenuList extends View {
   // menuGroup을 매개변수로 받는이유
   // menuGroups안의 여러 menuGroup을 객체데이터를 각각 가지고 초기화하여 사용될 거 같음
   // 강의 들으면서 업데이트 될 예정. 
-  constructor(menuGroup){
+  constructor(menuGroup,redirectDetailPage){
     super();
     // 나 menuGroup 데이터 받으면 this.menuGroup에 넣을거야. 
     // menuGroup 데이터 받는 부분은 MenuPage.js의 html`<menu-list .menuGroup = ${menuGroup}></menu-list>` 여기야.
     // 여기가 메뉴리스트의 객체가 생성되는 부분이거든! 
     this.menuGroup = menuGroup;
     this.isClosed = false;
+    this.redirectDetailPage = redirectDetailPage;
   }
 
   static get properties(){
@@ -24,6 +25,7 @@ export default class MenuList extends View {
       isClosed: {
         type: Boolean,
       },
+      redirectDetailPage: {type: Function},
     };
   }
 
@@ -52,7 +54,7 @@ export default class MenuList extends View {
 
         <ul class="menu-list">
         ${this.menuGroup.items.map(item => html`
-        <li class="menu-item">
+        <li class="menu-item" @click=${()=>this.redirectDetailPage(item.id)}>
                 <a class="menu-detail">
                     <div class="menu-img-area">
                         <img class="menu-img" 
